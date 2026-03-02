@@ -33,7 +33,9 @@ Docs:
 
 ## `<pgadmin-port>`
 
-The value of [`PGADMIN_HOST_PORT`](./dotenv-docker-secret.md#pgadmin_host_port) in [`.env.docker.secret`](./dotenv-docker-secret.md#what-is-envdockersecret).
+The [port number](./computer-networks.md#port-number) (without `<` and `>`) which `pgAdmin` [listens on](./computer-networks.md#listen-on-a-port).
+
+The port number is the value of [`PGADMIN_HOST_PORT`](./dotenv-docker-secret.md#pgadmin_host_port) in [`.env.docker.secret`](./dotenv-docker-secret.md#what-is-envdockersecret).
 
 ## Open `pgAdmin`
 
