@@ -10,7 +10,7 @@
     - [1.3.4. (UPD) Enable issues](#134-upd-enable-issues)
     - [1.3.5. (UPD) Add a classmate as a collaborator](#135-upd-add-a-classmate-as-a-collaborator)
     - [1.3.6. (UPD) Protect your `main` branch](#136-upd-protect-your-main-branch)
-  - [1.4. Set up programs (LOCAL)](#14-set-up-programs-local)
+  - [1.4. Set up tools (LOCAL)](#14-set-up-tools-local)
     - [1.4.1. (UPD) Set up `VS Code`](#141-upd-set-up-vs-code)
     - [1.4.2. (UPD) Set up `Docker`](#142-upd-set-up-docker)
     - [1.4.3. (UPD) (`Windows` only) Switch to the `Linux` shell for the `VS Code Terminal`](#143-upd-windows-only-switch-to-the-linux-shell-for-the-vs-code-terminal)
@@ -132,7 +132,9 @@
 
 1. [Protect the `main` branch](../../wiki/github.md#protect-a-branch).
 
-### 1.4. Set up programs (LOCAL)
+### 1.4. Set up tools (LOCAL)
+
+See [tools](../../wiki/software-types.md#tool).
 
 #### 1.4.1. (UPD) Set up `VS Code`
 
