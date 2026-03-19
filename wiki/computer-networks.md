@@ -14,9 +14,7 @@
     - [IPv4](#ipv4)
     - [IPv6](#ipv6)
   - [Hostname](#hostname)
-  - [FQDN](#fqdn)
   - [`<hostname>` placeholder](#hostname-placeholder)
-  - [`<host-fqdn>` placeholder](#host-fqdn-placeholder)
   - [`<host-ip-address>` placeholder](#host-ip-address-placeholder)
   - [`<host>` placeholder](#host-placeholder)
   - [`localhost`](#localhost)
@@ -116,15 +114,9 @@ It is used to identify the host instead of its [IP address](#ip-address).
 
 Examples: [`localhost`](#localhost), `my-server`, [`vm.innopolis.university`](./vm.md#go-to-the-vms-site).
 
-### FQDN
-
 ### `<hostname>` placeholder
 
 The [hostname](#hostname) (without `<` and `>`).
-
-### `<host-fqdn>` placeholder
-
-The [FQDN](#fqdn) of the [host](#host) (without `<` and `>`).
 
 ### `<host-ip-address>` placeholder
 
