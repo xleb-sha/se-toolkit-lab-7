@@ -13,7 +13,7 @@ sequenceDiagram
         participant agent.py
     end
     box VM
-        participant Proxy as qwen-code-oai-proxy
+        participant Proxy as qwen-code-api
     end
     box Qwen Cloud
         participant LLM as Qwen 3 Coder
