@@ -14,7 +14,8 @@ COPY bot/pyproject.toml ./pyproject.toml
 COPY bot/uv.lock ./uv.lock
 
 # Install dependencies using uv
-RUN uv sync --frozen --no-dev
+# Retry in case of network issues
+RUN uv sync --frozen --no-dev --retries 3
 
 # Copy bot source code
 COPY bot/ ./bot/
