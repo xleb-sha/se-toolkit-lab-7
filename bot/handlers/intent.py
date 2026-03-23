@@ -4,17 +4,10 @@ Routes user messages to LLM for tool-based intent resolution.
 Includes fallback handling for greetings and gibberish.
 """
 
-import re
 import sys
 from config import load_config
 from services import create_llm_client
 
-
-# Patterns for fallback handling
-GREETING_PATTERNS = [
-    r"\b(hi|hello|hey|greetings|good\s*(morning|afternoon|evening))\b",
-    r"\bпривет|здравствуйте|добрый\s*(день|утро|вечер)\b",
-]
 
 CAPABILITIES_HINT = """I can help you with:
 - "what labs are available?" — List all labs
@@ -27,7 +20,7 @@ Or use slash commands: /start, /help, /health, /labs, /scores <lab>"""
 
 
 def is_greeting(text: str) -> bool:
-    """Check if the message is a greeting.
+    """Check if the message is a greeting using simple string matching.
 
     Args:
         text: User message text.
@@ -35,15 +28,24 @@ def is_greeting(text: str) -> bool:
     Returns:
         True if the message is a greeting.
     """
-    text_lower = text.lower()
-    for pattern in GREETING_PATTERNS:
-        if re.search(pattern, text_lower):
+    text_lower = text.lower().strip()
+    
+    # List of common greetings
+    greetings = [
+        "hi", "hello", "hey", "greetings", "good morning", "good afternoon", 
+        "good evening", "привет", "здравствуйте", "добрый день", "добрый вечер",
+    ]
+    
+    # Check if text starts with or equals any greeting
+    for greeting in greetings:
+        if text_lower == greeting or text_lower.startswith(greeting + " ") or text_lower.startswith(greeting + "!"):
             return True
+    
     return False
 
 
 def is_gibberish(text: str) -> bool:
-    """Check if the message appears to be gibberish.
+    """Check if the message appears to be gibberish using simple heuristics.
 
     Args:
         text: User message text.
@@ -51,25 +53,28 @@ def is_gibberish(text: str) -> bool:
     Returns:
         True if the message appears to be gibberish.
     """
+    stripped = text.strip()
+    
     # Very short messages (1-2 chars) are likely gibberish
-    if len(text.strip()) <= 2:
+    if len(stripped) <= 2:
         return True
     
-    # Check if message has any meaningful words
-    # A message with mostly non-alphabetic chars is gibberish
-    alpha_chars = sum(1 for c in text if c.isalpha())
-    if alpha_chars < len(text.strip()) * 0.3:
-        return True
+    # Check for repeated characters (e.g., "aaaaa", "asdfgh")
+    if len(stripped) >= 4:
+        # Count unique characters
+        unique_chars = len(set(stripped.lower()))
+        # If mostly unique chars but all from small keyboard region, likely gibberish
+        home_row = set("asdfghjkl")
+        qwerty_row = set("qwertyuiop")
+        text_chars = set(stripped.lower().replace(" ", ""))
+        
+        if text_chars and (text_chars <= home_row or text_chars <= qwerty_row):
+            return True
     
-    # Check for random keyboard patterns
-    gibberish_patterns = [
-        r"^(.)\1{4,}$",  # Same char repeated 5+ times (e.g., "aaaaa")
-        r"^[asdfghjkl]+$",  # Home row typing
-        r"^[qwerty]+$",  # QWERTY row typing
-    ]
-    text_no_spaces = text.replace(" ", "").lower()
-    for pattern in gibberish_patterns:
-        if re.match(pattern, text_no_spaces):
+    # Check for same character repeated many times
+    if len(stripped) >= 5:
+        first_char = stripped[0].lower()
+        if all(c.lower() == first_char for c in stripped if c.isalpha()):
             return True
     
     return False
