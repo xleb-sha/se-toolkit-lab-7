@@ -24,37 +24,45 @@ from handlers import (
     handle_health,
     handle_labs,
     handle_scores,
+    route_intent,
 )
 
 
 def route_command(text: str) -> str:
     """Route command text to appropriate handler.
-    
+
     Args:
-        text: The command text (e.g., "/start", "/help").
-    
+        text: The command text (e.g., "/start", "/help", or plain text).
+
     Returns:
         Handler response text.
     """
-    # Parse command and arguments
-    parts = text.strip().split(maxsplit=1)
-    command = parts[0].lower()
-    argument = parts[1] if len(parts) > 1 else ""
+    stripped = text.strip()
     
-    # Route to handler
-    if command == "/start":
-        return handle_start(text)
-    elif command == "/help":
-        return handle_help(text)
-    elif command == "/health":
-        return handle_health(text)
-    elif command == "/labs":
-        return handle_labs(text)
-    elif command == "/scores":
-        # Pass the full text to handle_scores so it can parse the argument
-        return handle_scores(text)
+    # Check if this is a slash command
+    if stripped.startswith("/"):
+        # Parse command and arguments
+        parts = stripped.split(maxsplit=1)
+        command = parts[0].lower()
+        argument = parts[1] if len(parts) > 1 else ""
+
+        # Route to handler
+        if command == "/start":
+            return handle_start(text)
+        elif command == "/help":
+            return handle_help(text)
+        elif command == "/health":
+            return handle_health(text)
+        elif command == "/labs":
+            return handle_labs(text)
+        elif command == "/scores":
+            # Pass the full text to handle_scores so it can parse the argument
+            return handle_scores(text)
+        else:
+            return f"Unknown command: {command}. Use /help to see available commands."
     else:
-        return f"Unknown command: {command}. Use /help to see available commands."
+        # Not a slash command - route to LLM intent router
+        return route_intent(text)
 
 
 def run_test_mode(command: str) -> None:

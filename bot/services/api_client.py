@@ -60,6 +60,128 @@ class LMSClient:
         response.raise_for_status()
         return response.json()
 
+    def get_learners(self) -> list[dict[str, Any]]:
+        """Get list of enrolled learners.
+
+        Returns:
+            List of learners.
+
+        Raises:
+            httpx.RequestError: If the request fails.
+        """
+        response = self._client.get("/learners/")
+        response.raise_for_status()
+        return response.json()
+
+    def get_scores(self, lab: str) -> list[dict[str, Any]]:
+        """Get score distribution for a specific lab.
+
+        Args:
+            lab: Lab identifier (e.g., "lab-04").
+
+        Returns:
+            List of score distribution records.
+
+        Raises:
+            httpx.RequestError: If the request fails.
+        """
+        response = self._client.get(
+            "/analytics/scores",
+            params={"lab": lab},
+        )
+        response.raise_for_status()
+        return response.json()
+
+    def get_timeline(self, lab: str) -> list[dict[str, Any]]:
+        """Get submissions per day timeline for a specific lab.
+
+        Args:
+            lab: Lab identifier (e.g., "lab-04").
+
+        Returns:
+            List of timeline records.
+
+        Raises:
+            httpx.RequestError: If the request fails.
+        """
+        response = self._client.get(
+            "/analytics/timeline",
+            params={"lab": lab},
+        )
+        response.raise_for_status()
+        return response.json()
+
+    def get_groups(self, lab: str) -> list[dict[str, Any]]:
+        """Get per-group scores and student counts for a specific lab.
+
+        Args:
+            lab: Lab identifier (e.g., "lab-04").
+
+        Returns:
+            List of group records.
+
+        Raises:
+            httpx.RequestError: If the request fails.
+        """
+        response = self._client.get(
+            "/analytics/groups",
+            params={"lab": lab},
+        )
+        response.raise_for_status()
+        return response.json()
+
+    def get_top_learners(self, lab: str, limit: int = 5) -> list[dict[str, Any]]:
+        """Get top N learners by score for a specific lab.
+
+        Args:
+            lab: Lab identifier (e.g., "lab-04").
+            limit: Number of top learners to return.
+
+        Returns:
+            List of top learners.
+
+        Raises:
+            httpx.RequestError: If the request fails.
+        """
+        response = self._client.get(
+            "/analytics/top-learners",
+            params={"lab": lab, "limit": limit},
+        )
+        response.raise_for_status()
+        return response.json()
+
+    def get_completion_rate(self, lab: str) -> dict[str, Any]:
+        """Get completion rate percentage for a specific lab.
+
+        Args:
+            lab: Lab identifier (e.g., "lab-04").
+
+        Returns:
+            Completion rate data.
+
+        Raises:
+            httpx.RequestError: If the request fails.
+        """
+        response = self._client.get(
+            "/analytics/completion-rate",
+            params={"lab": lab},
+        )
+        response.raise_for_status()
+        return response.json()
+
+    def trigger_sync(self) -> dict[str, Any]:
+        """Trigger ETL sync to refresh data from autochecker.
+
+        Returns:
+            Sync result data.
+
+        Raises:
+            httpx.RequestError: If the request fails.
+        """
+        response = self._client.post("/pipeline/sync", json={})
+        response.raise_for_status()
+        return response.json()
+
     def close(self) -> None:
         """Close the HTTP client."""
         self._client.close()
