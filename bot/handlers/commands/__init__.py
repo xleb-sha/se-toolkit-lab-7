@@ -16,9 +16,24 @@ def handle_start(text: str) -> str:
         text: The command text (e.g., "/start").
 
     Returns:
-        Welcome message.
+        Welcome message with inline keyboard hints.
     """
-    return "Welcome to the LMS Bot! I can help you check system health, browse labs, and view scores. Use /help to see all available commands."
+    return """Welcome to the LMS Bot! 👋
+
+I can help you check system health, browse labs, and view scores.
+
+Quick actions:
+• /health — Check backend status
+• /labs — List available labs
+• /scores lab-04 — Show pass rates for Lab 04
+
+Or just ask me a question:
+• "what labs are available?"
+• "show me scores for lab 4"
+• "which lab has the lowest pass rate?"
+• "who are the top 5 students?"
+
+Use /help to see all available commands."""
 
 
 def handle_help(text: str) -> str:

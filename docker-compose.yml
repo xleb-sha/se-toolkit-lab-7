@@ -89,6 +89,29 @@ services:
     volumes:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile
 
+  bot:
+    build:
+      context: .
+      dockerfile: bot/Dockerfile
+    restart: unless-stopped
+    networks:
+      - lms-network
+    environment:
+      # Telegram bot configuration
+      - BOT_TOKEN=${BOT_TOKEN:?'BOT_TOKEN is required'}
+      # LMS backend - use Docker service name, not localhost
+      - LMS_API_URL=http://backend:${BACKEND_CONTAINER_PORT}
+      - LMS_API_KEY=${LMS_API_KEY:?'LMS_API_KEY is required'}
+      # LLM API - use host.docker.internal to reach qwen proxy on host
+      - LLM_API_BASE_URL=http://host.docker.internal:${QWEN_CODE_API_HOST_PORT}/v1
+      - LLM_API_KEY=${LLM_API_KEY:?'LLM_API_KEY is required'}
+      - LLM_API_MODEL=${LLM_API_MODEL:-coder-model}
+    extra_hosts:
+      # Allow bot to reach qwen-code-oai-proxy on host
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - backend
+
 volumes:
   postgres_data:
 

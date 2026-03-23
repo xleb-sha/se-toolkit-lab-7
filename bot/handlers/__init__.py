@@ -12,6 +12,7 @@ from .commands import (
     handle_labs,
     handle_scores,
 )
+from .intent import route_intent
 
 __all__ = [
     "handle_start",
@@ -19,4 +20,5 @@ __all__ = [
     "handle_health",
     "handle_labs",
     "handle_scores",
+    "route_intent",
 ]
