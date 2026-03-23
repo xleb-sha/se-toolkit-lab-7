@@ -51,10 +51,8 @@ def route_command(text: str) -> str:
     elif command == "/labs":
         return handle_labs(text)
     elif command == "/scores":
-        if argument:
-            return handle_scores(argument)
-        else:
-            return "Usage: /scores <lab> (e.g., /scores lab-04)"
+        # Pass the full text to handle_scores so it can parse the argument
+        return handle_scores(text)
     else:
         return f"Unknown command: {command}. Use /help to see available commands."
 

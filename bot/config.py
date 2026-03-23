@@ -14,10 +14,11 @@ def load_config() -> dict[str, str]:
     Raises:
         ValueError: If required configuration is missing.
     """
-    # Determine the path to .env.bot.secret
+    # Determine the path to .env.bot.secret in repo root
     bot_dir = Path(__file__).parent
-    env_file = bot_dir / ".env.bot.secret"
-    
+    repo_root = bot_dir.parent
+    env_file = repo_root / ".env.bot.secret"
+
     # Load environment variables from file
     load_dotenv(env_file)
     
