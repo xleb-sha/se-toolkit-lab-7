@@ -6,11 +6,14 @@ from dotenv import load_dotenv
 
 
 def load_config() -> dict[str, str]:
-    """Load configuration from .env.bot.secret file.
-    
+    """Load configuration from environment variables.
+
+    In Docker, variables are set by docker-compose via env_file.
+    Locally, loads from .env.bot.secret file.
+
     Returns:
         Dictionary with configuration keys.
-    
+
     Raises:
         ValueError: If required configuration is missing.
     """
@@ -19,8 +22,10 @@ def load_config() -> dict[str, str]:
     repo_root = bot_dir.parent
     env_file = repo_root / ".env.bot.secret"
 
-    # Load environment variables from file
-    load_dotenv(env_file)
+    # Load environment variables from file if it exists (local development)
+    # In Docker, variables are already set by docker-compose
+    if env_file.exists():
+        load_dotenv(env_file)
     
     # Collect configuration
     config = {
