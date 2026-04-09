@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(C:\\Users\\xleb_\\software-engineering-toolkit\\decisionmaker/**)",
+      "Bash(xcopy *)",
+      "Bash(copy *)",
+      "Bash(rmdir *)",
+      "Bash(del *)",
+      "Bash(do *)",
+      "Bash(git init)"
+    ]
+  },
+  "$version": 3
+}
